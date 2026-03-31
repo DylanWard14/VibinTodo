@@ -12,10 +12,10 @@ import {
   TextField,
   Toolbar,
   Typography,
-} from '@mui/material'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
-import { Link } from 'react-router-dom'
+} from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import { Link } from 'react-router-dom';
 
 function LandingPage() {
   return (
@@ -121,7 +121,7 @@ function LandingPage() {
         </Box>
       </Container>
     </>
-  )
+  );
 }
 
-export default LandingPage
+export default LandingPage;

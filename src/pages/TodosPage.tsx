@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+import { useMemo, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -15,24 +15,24 @@ import {
   Typography,
   AppBar,
   Toolbar,
-} from '@mui/material'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import { useTodoStore } from '../stores/todoStore'
+} from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useTodoStore } from '../stores/todoStore';
 
 function TodosPage() {
   const { todos, addTodo, toggleCompletedStatus, removeTodo, clearCompleted } =
-    useTodoStore()
-  const [text, setText] = useState('')
+    useTodoStore();
+  const [text, setText] = useState('');
 
   const completedCount = useMemo(
     () => todos.filter((todo) => todo.completed).length,
     [todos],
-  )
+  );
 
   const handleAdd = () => {
-    addTodo(text)
-    setText('')
-  }
+    addTodo(text);
+    setText('');
+  };
 
   return (
     <>
@@ -71,8 +71,8 @@ function TodosPage() {
                 fullWidth
                 onKeyDown={(event) => {
                   if (event.key === 'Enter') {
-                    event.preventDefault()
-                    handleAdd()
+                    event.preventDefault();
+                    handleAdd();
                   }
                 }}
               />
@@ -140,7 +140,7 @@ function TodosPage() {
         </Box>
       </Container>
     </>
-  )
+  );
 }
 
-export default TodosPage
+export default TodosPage;
