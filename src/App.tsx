@@ -52,7 +52,12 @@ function App() {
 
           <Box
             className="todo-cta"
-            sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'center' }}
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 2,
+              alignItems: 'center',
+            }}
           >
             <TextField
               label="Add a new task"
@@ -86,7 +91,7 @@ function App() {
                   />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Review today&apos;s priorities"
+                  primary="Review today's priorities"
                   sx={{ textDecoration: 'line-through', opacity: 0.7 }}
                 />
               </ListItem>
