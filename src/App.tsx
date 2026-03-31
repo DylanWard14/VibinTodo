@@ -1,39 +1,124 @@
 import './App.css'
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  TextField,
+  Toolbar,
+  Typography,
+  Checkbox,
+  Paper,
+} from '@mui/material'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 
 function App() {
   return (
-    <main className="todo-landing">
-      <header className="todo-header">
-        <h1>Todo</h1>
-        <p>Capture tasks, stay focused, and get more done.</p>
-      </header>
+    <>
+      <AppBar position="static" color="transparent" elevation={0}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
+            Todo
+          </Typography>
+          <Button color="inherit" size="small">
+            Sign in
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-      <section className="todo-cta">
-        <div className="todo-input-placeholder">
-          <span className="checkbox"></span>
-          <span className="placeholder-text">Add a new task...</span>
-        </div>
-        <button className="primary-button">Get Started</button>
-      </section>
+      <Container maxWidth="md" sx={{ py: 6 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4,
+          }}
+          className="todo-landing"
+        >
+          <Box className="todo-header">
+            <Typography variant="h3" component="h1" gutterBottom>
+              Stay on top of your day.
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              A simple, focused todo app to capture tasks, clear your mind, and
+              keep moving forward.
+            </Typography>
+          </Box>
 
-      <section className="todo-preview">
-        <h2>Today&apos;s tasks</h2>
-        <ul>
-          <li className="completed">
-            <span className="checkbox checked"></span>
-            <span>Review today&apos;s priorities</span>
-          </li>
-          <li>
-            <span className="checkbox"></span>
-            <span>Add your first real todo</span>
-          </li>
-          <li>
-            <span className="checkbox"></span>
-            <span>Organize tasks into categories</span>
-          </li>
-        </ul>
-      </section>
-    </main>
+          <Box
+            className="todo-cta"
+            sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'center' }}
+          >
+            <TextField
+              label="Add a new task"
+              variant="outlined"
+              size="medium"
+              sx={{ flex: '1 1 260px' }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              className="primary-button"
+            >
+              Get started
+            </Button>
+          </Box>
+
+          <Paper elevation={3} className="todo-preview">
+            <Typography variant="subtitle1" gutterBottom>
+              Today&apos;s tasks
+            </Typography>
+            <List>
+              <ListItem>
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked
+                    disableRipple
+                    icon={<RadioButtonUncheckedIcon />}
+                    checkedIcon={<CheckCircleIcon color="success" />}
+                  />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Review today&apos;s priorities"
+                  sx={{ textDecoration: 'line-through', opacity: 0.7 }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={false}
+                    disableRipple
+                    icon={<RadioButtonUncheckedIcon />}
+                    checkedIcon={<CheckCircleIcon color="success" />}
+                  />
+                </ListItemIcon>
+                <ListItemText primary="Add your first real todo" />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={false}
+                    disableRipple
+                    icon={<RadioButtonUncheckedIcon />}
+                    checkedIcon={<CheckCircleIcon color="success" />}
+                  />
+                </ListItemIcon>
+                <ListItemText primary="Organize tasks into categories" />
+              </ListItem>
+            </List>
+          </Paper>
+        </Box>
+      </Container>
+    </>
   )
 }
 
