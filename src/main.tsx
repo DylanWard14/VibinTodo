@@ -5,6 +5,7 @@ import './index.css';
 import App from './App.tsx';
 import { theme } from './theme';
 import { BrowserRouter } from 'react-router-dom';
+import './i18n';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

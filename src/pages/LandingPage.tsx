@@ -16,17 +16,20 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function LandingPage() {
+  const { t } = useTranslation();
+
   return (
     <>
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            Todo
+            {t('app.name')}
           </Typography>
           <Button color="inherit" size="small">
-            Sign in
+            {t('app.signIn')}
           </Button>
         </Toolbar>
       </AppBar>
@@ -35,11 +38,10 @@ function LandingPage() {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <Box>
             <Typography variant="h3" component="h1" gutterBottom>
-              Stay on top of your day.
+              {t('landing.headline')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              A simple, focused todo app to capture tasks, clear your mind, and
-              keep moving forward.
+              {t('landing.subheadline')}
             </Typography>
           </Box>
 
@@ -52,7 +54,7 @@ function LandingPage() {
             }}
           >
             <TextField
-              label="Add a new task"
+              label={t('landing.addNewTaskLabel')}
               variant="outlined"
               size="medium"
               sx={{ flex: '1 1 260px' }}
@@ -65,13 +67,13 @@ function LandingPage() {
               component={Link}
               to="/todos"
             >
-              Get started
+              {t('landing.getStarted')}
             </Button>
           </Box>
 
           <Paper elevation={3} sx={{ padding: 2, borderRadius: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
-              Today&apos;s tasks
+              {t('landing.todaysTasks')}
             </Typography>
             <List disablePadding>
               <ListItem>
@@ -82,11 +84,13 @@ function LandingPage() {
                     disableRipple
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="success" />}
-                    inputProps={{ 'aria-label': 'Completed example todo' }}
+                    inputProps={{
+                      'aria-label': t('landing.example.completedAriaLabel'),
+                    }}
                   />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Review today's priorities"
+                  primary={t('landing.example.reviewPriorities')}
                   sx={{ textDecoration: 'line-through', opacity: 0.7 }}
                 />
               </ListItem>
@@ -98,10 +102,12 @@ function LandingPage() {
                     disableRipple
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="success" />}
-                    inputProps={{ 'aria-label': 'Example todo' }}
+                    inputProps={{
+                      'aria-label': t('landing.example.todoAriaLabel'),
+                    }}
                   />
                 </ListItemIcon>
-                <ListItemText primary="Add your first real todo" />
+                <ListItemText primary={t('landing.example.addFirstTodo')} />
               </ListItem>
               <ListItem>
                 <ListItemIcon>
@@ -111,10 +117,14 @@ function LandingPage() {
                     disableRipple
                     icon={<RadioButtonUncheckedIcon />}
                     checkedIcon={<CheckCircleIcon color="success" />}
-                    inputProps={{ 'aria-label': 'Example todo' }}
+                    inputProps={{
+                      'aria-label': t('landing.example.todoAriaLabel'),
+                    }}
                   />
                 </ListItemIcon>
-                <ListItemText primary="Organize tasks into categories" />
+                <ListItemText
+                  primary={t('landing.example.organizeCategories')}
+                />
               </ListItem>
             </List>
           </Paper>

@@ -1,0 +1,31 @@
+{
+  "app": {
+    "name": "Todo",
+    "signIn": "Sign in"
+  },
+  "landing": {
+    "headline": "Stay on top of your day.",
+    "subheadline": "A simple, focused todo app to capture tasks, clear your mind, and keep moving forward.",
+    "addNewTaskLabel": "Add a new task",
+    "getStarted": "Get started",
+    "todaysTasks": "Today's tasks",
+    "example": {
+      "completedAriaLabel": "Completed example todo",
+      "todoAriaLabel": "Example todo",
+      "reviewPriorities": "Review today's priorities",
+      "addFirstTodo": "Add your first real todo",
+      "organizeCategories": "Organize tasks into categories"
+    }
+  },
+  "todos": {
+    "back": "Back",
+    "title": "Your todos",
+    "clearCompleted": "Clear completed",
+    "addItems": "Add items",
+    "newTodoLabel": "New todo",
+    "addButton": "Add",
+    "todoListTitle": "Todo list",
+    "emptyState": "No todos yet. Add one above to get started.",
+    "deleteAriaLabel": "Delete todo"
+  }
+}

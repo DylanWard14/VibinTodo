@@ -18,8 +18,10 @@ import {
 } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useTodoStore } from '../stores/todoStore';
+import { useTranslation } from 'react-i18next';
 
 function TodosPage() {
+  const { t } = useTranslation();
   const { todos, addTodo, toggleCompletedStatus, removeTodo, clearCompleted } =
     useTodoStore();
   const [text, setText] = useState('');
@@ -39,10 +41,10 @@ function TodosPage() {
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar sx={{ gap: 1 }}>
           <Button component={RouterLink} to="/" color="inherit" size="small">
-            Back
+            {t('todos.back')}
           </Button>
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            Your todos
+            {t('todos.title')}
           </Typography>
           <Button
             color="inherit"
@@ -50,7 +52,7 @@ function TodosPage() {
             disabled={completedCount === 0}
             onClick={clearCompleted}
           >
-            Clear completed
+            {t('todos.clearCompleted')}
           </Button>
         </Toolbar>
       </AppBar>
@@ -59,14 +61,14 @@ function TodosPage() {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
             <Typography variant="h5" gutterBottom>
-              Add items
+              {t('todos.addItems')}
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
               <TextField
                 value={text}
                 onChange={(event) => setText(event.target.value)}
-                label="New todo"
+                label={t('todos.newTodoLabel')}
                 variant="outlined"
                 fullWidth
                 onKeyDown={(event) => {
@@ -83,19 +85,19 @@ function TodosPage() {
                 onClick={handleAdd}
                 sx={{ flex: '0 0 auto', alignSelf: 'center' }}
               >
-                Add
+                {t('todos.addButton')}
               </Button>
             </Box>
           </Paper>
 
           <Paper elevation={3} sx={{ p: 2.5, borderRadius: 2 }}>
             <Typography variant="h6" gutterBottom>
-              Todo list
+              {t('todos.todoListTitle')}
             </Typography>
 
             {todos.length === 0 ? (
               <Typography variant="body2" color="text.secondary">
-                No todos yet. Add one above to get started.
+                {t('todos.emptyState')}
               </Typography>
             ) : (
               <List disablePadding>
@@ -106,7 +108,7 @@ function TodosPage() {
                     secondaryAction={
                       <IconButton
                         edge="end"
-                        aria-label="Delete todo"
+                        aria-label={t('todos.deleteAriaLabel')}
                         onClick={() => removeTodo(todo.id)}
                       >
                         <DeleteOutlineIcon />
