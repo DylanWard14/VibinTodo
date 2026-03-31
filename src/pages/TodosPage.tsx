@@ -112,9 +112,9 @@ function TodosPage() {
                         <DeleteOutlineIcon />
                       </IconButton>
                     }
-                    sx={{ alignItems: 'flex-start' }}
+                    sx={{ alignItems: 'center' }}
                   >
-                    <ListItemIcon sx={{ minWidth: 40, mt: 0.25 }}>
+                    <ListItemIcon sx={{ minWidth: 40 }}>
                       <Checkbox
                         edge="start"
                         checked={todo.completed}
