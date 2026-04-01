@@ -1,6 +1,7 @@
 export type Todo = {
   id: string;
   text: string;
+  completed: boolean;
   createdAt: number;
 };
 
@@ -28,12 +29,27 @@ export function createTodo(userId: string, text: string): Todo {
   const todo: Todo = {
     id: makeId(),
     text: trimmedText,
+    completed: false,
     createdAt: Date.now(),
   };
 
   const existingTodos = todosByUserId.get(userId) ?? [];
   todosByUserId.set(userId, [todo, ...existingTodos]);
   return todo;
+}
+
+export function toggleTodo(userId: string, todoId: string): Todo | null {
+  const todos = todosByUserId.get(userId) ?? [];
+  let toggled: Todo | null = null;
+  const updated = todos.map((todo) => {
+    if (todo.id === todoId) {
+      toggled = { ...todo, completed: !todo.completed };
+      return toggled;
+    }
+    return todo;
+  });
+  todosByUserId.set(userId, updated);
+  return toggled;
 }
 
 export function deleteTodo(userId: string, todoId: string): boolean {

@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 
 import { requireUser, type AuthVariables } from './auth.js';
-import { createTodo, deleteTodo, listTodos } from './todosStore.js';
+import { createTodo, deleteTodo, listTodos, toggleTodo } from './todosStore.js';
 
 type Bindings = {
   Variables: AuthVariables;
@@ -44,6 +44,21 @@ app.post('/api/todos', async (context) => {
       error instanceof Error ? error.message : 'Invalid request body.';
     return context.json({ error: 'BAD_REQUEST', message }, 400);
   }
+});
+
+app.patch('/api/todos/:id/toggle', (context) => {
+  const user = context.get('user');
+  const todoId = context.req.param('id');
+
+  const todo = toggleTodo(user.id, todoId);
+  if (!todo) {
+    return context.json(
+      { error: 'NOT_FOUND', message: 'Todo not found.' },
+      404,
+    );
+  }
+
+  return context.json({ todo });
 });
 
 app.delete('/api/todos/:id', (context) => {
