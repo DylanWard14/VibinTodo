@@ -18,6 +18,12 @@
       "organizeCategories": "Organize tasks into categories"
     }
   },
+  "signIn": {
+    "title": "Sign in",
+    "email": "Email address",
+    "password": "Password",
+    "submit": "Sign in"
+  },
   "register": {
     "title": "Create an account",
     "firstName": "First name",
