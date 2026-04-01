@@ -2,7 +2,8 @@
   "app": {
     "name": "Todo",
     "signIn": "Sign in",
-    "register": "Register"
+    "register": "Register",
+    "hello": "Hello, {{firstName}}"
   },
   "landing": {
     "headline": "Stay on top of your day.",

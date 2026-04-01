@@ -13,13 +13,16 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../stores/authStore';
 
 function LandingPage() {
   const { t } = useTranslation();
+  const user = useAuthStore((state) => state.user);
 
   return (
     <>
@@ -28,17 +31,28 @@ function LandingPage() {
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
             {t('app.name')}
           </Typography>
-          <Button color="inherit" size="small" component={Link} to="/signin">
-            {t('app.signIn')}
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            component={Link}
-            to="/register"
-          >
-            {t('app.register')}
-          </Button>
+          {user ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <AccountCircleIcon fontSize="small" />
+              <Typography variant="body2">
+                {t('app.hello', { firstName: user.firstName })}
+              </Typography>
+            </Box>
+          ) : (
+            <>
+              <Button color="inherit" size="small" component={Link} to="/signin">
+                {t('app.signIn')}
+              </Button>
+              <Button
+                variant="contained"
+                size="small"
+                component={Link}
+                to="/register"
+              >
+                {t('app.register')}
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
 
