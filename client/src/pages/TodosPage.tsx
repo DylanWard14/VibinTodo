@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Container,
   IconButton,
   List,
@@ -22,9 +23,21 @@ import { useTranslation } from 'react-i18next';
 
 function TodosPage() {
   const { t } = useTranslation();
-  const { todos, addTodo, toggleCompletedStatus, removeTodo, clearCompleted } =
-    useTodoStore();
+  const {
+    todos,
+    loading,
+    error,
+    fetchTodos,
+    addTodo,
+    toggleCompletedStatus,
+    removeTodo,
+    clearCompleted,
+  } = useTodoStore();
   const [text, setText] = useState('');
+
+  useEffect(() => {
+    fetchTodos();
+  }, [fetchTodos]);
 
   const completedCount = useMemo(
     () => todos.filter((todo) => todo.completed).length,
@@ -95,7 +108,15 @@ function TodosPage() {
               {t('todos.todoListTitle')}
             </Typography>
 
-            {todos.length === 0 ? (
+            {loading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
+            ) : error ? (
+              <Typography variant="body2" color="error">
+                {error}
+              </Typography>
+            ) : todos.length === 0 ? (
               <Typography variant="body2" color="text.secondary">
                 {t('todos.emptyState')}
               </Typography>
