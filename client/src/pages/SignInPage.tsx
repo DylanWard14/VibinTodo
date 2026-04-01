@@ -15,15 +15,18 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { login } from '../api/auth';
+import { useAuthStore } from '../stores/authStore';
 
 function SignInPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
   const [fields, setFields] = useState({ email: '', password: '' });
 
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: ({ token }) => {
+      setAuth(token);
       navigate('/todos');
     },
   });

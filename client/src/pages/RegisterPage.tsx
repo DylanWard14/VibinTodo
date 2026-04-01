@@ -15,10 +15,12 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { register } from '../api/auth';
+import { useAuthStore } from '../stores/authStore';
 
 function RegisterPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
   const [fields, setFields] = useState({
     firstName: '',
     lastName: '',
@@ -28,7 +30,8 @@ function RegisterPage() {
 
   const mutation = useMutation({
     mutationFn: register,
-    onSuccess: () => {
+    onSuccess: ({ token }) => {
+      setAuth(token);
       navigate('/todos');
     },
   });
