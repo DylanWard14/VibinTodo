@@ -31,6 +31,14 @@ function LandingPage() {
           <Button color="inherit" size="small">
             {t('app.signIn')}
           </Button>
+          <Button
+            variant="contained"
+            size="small"
+            component={Link}
+            to="/register"
+          >
+            {t('app.register')}
+          </Button>
         </Toolbar>
       </AppBar>
 

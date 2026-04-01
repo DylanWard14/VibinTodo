@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "Todo",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "register": "Register"
   },
   "landing": {
     "headline": "Stay on top of your day.",
@@ -16,6 +17,14 @@
       "addFirstTodo": "Add your first real todo",
       "organizeCategories": "Organize tasks into categories"
     }
+  },
+  "register": {
+    "title": "Create an account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email address",
+    "password": "Password",
+    "submit": "Create account"
   },
   "todos": {
     "back": "Back",
