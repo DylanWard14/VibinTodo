@@ -2,7 +2,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 
-import { requireUser, type AuthVariables } from './auth';
+import { loginHandler, registerHandler, requireUser, type AuthVariables } from './auth';
 import { createTodo, deleteTodo, listTodos, toggleTodo } from './todosStore';
 
 type Bindings = {
@@ -23,6 +23,9 @@ app.use(
 app.get('/health', (context) => {
   return context.json({ ok: true });
 });
+
+app.post('/auth/register', registerHandler);
+app.post('/auth/login', loginHandler);
 
 app.use('/api/*', requireUser);
 
