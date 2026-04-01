@@ -1,7 +1,20 @@
 import bcrypt from 'bcrypt';
 import { sign, verify } from 'hono/jwt';
 import type { Context, MiddlewareHandler } from 'hono';
+import { z } from 'zod';
 import { createUser, findUserByEmail } from './usersStore';
+
+const registerSchema = z.object({
+  email: z.email(),
+  password: z.string().min(8),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
+});
+
+const loginSchema = z.object({
+  email: z.email(),
+  password: z.string().min(1),
+});
 
 export type AuthUser = {
   id: string;
@@ -52,17 +65,15 @@ export const requireUser: MiddlewareHandler<{
 
 export async function registerHandler(context: Context): Promise<Response> {
   const body = await context.req.json().catch(() => null);
-  const email = typeof body?.email === 'string' ? body.email.trim() : '';
-  const password = typeof body?.password === 'string' ? body.password : '';
-  const firstName = typeof body?.firstName === 'string' ? body.firstName.trim() : '';
-  const lastName = typeof body?.lastName === 'string' ? body.lastName.trim() : '';
-
-  if (!email || !password || !firstName || !lastName) {
+  const parsed = registerSchema.safeParse(body);
+  if (!parsed.success) {
     return context.json(
-      { error: 'BAD_REQUEST', message: 'Email, password, first name, and last name are required.' },
+      { error: 'BAD_REQUEST', message: parsed.error.issues[0].message },
       400,
     );
   }
+
+  const { email, password, firstName, lastName } = parsed.data;
 
   const existing = await findUserByEmail(email);
   if (existing) {
@@ -85,15 +96,15 @@ export async function registerHandler(context: Context): Promise<Response> {
 
 export async function loginHandler(context: Context): Promise<Response> {
   const body = await context.req.json().catch(() => null);
-  const email = typeof body?.email === 'string' ? body.email.trim() : '';
-  const password = typeof body?.password === 'string' ? body.password : '';
-
-  if (!email || !password) {
+  const parsed = loginSchema.safeParse(body);
+  if (!parsed.success) {
     return context.json(
-      { error: 'BAD_REQUEST', message: 'Email and password are required.' },
+      { error: 'BAD_REQUEST', message: parsed.error.issues[0].message },
       400,
     );
   }
+
+  const { email, password } = parsed.data;
 
   const user = await findUserByEmail(email);
   const passwordMatch = user

@@ -14,7 +14,8 @@
     "hono": "^4.9.1",
     "knex": "^3.2.8",
     "pg": "^8.20.0",
-    "postgres": "^3.4.8"
+    "postgres": "^3.4.8",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
