@@ -1,3 +1,5 @@
+import { useAuthStore } from '../stores/authStore';
+
 export type TodoItem = {
   id: string;
   text: string;
@@ -5,19 +7,11 @@ export type TodoItem = {
   createdAt: number;
 };
 
-export function getUserId(): string {
-  let userId = localStorage.getItem('todo-user-id');
-  if (!userId) {
-    userId = crypto.randomUUID();
-    localStorage.setItem('todo-user-id', userId);
-  }
-  return userId;
-}
-
 function apiHeaders(): HeadersInit {
+  const { token } = useAuthStore.getState();
   return {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${getUserId()}`,
+    Authorization: `Bearer ${token}`,
   };
 }
 
