@@ -3,7 +3,8 @@
     "name": "Todo",
     "signIn": "Sign in",
     "register": "Register",
-    "hello": "Hello, {{firstName}}"
+    "hello": "Hello, {{firstName}}",
+    "logout": "Logout"
   },
   "landing": {
     "headline": "Stay on top of your day.",

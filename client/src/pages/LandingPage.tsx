@@ -23,6 +23,7 @@ import { useAuthStore } from '../stores/authStore';
 function LandingPage() {
   const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   return (
     <>
@@ -37,6 +38,9 @@ function LandingPage() {
               <Typography variant="body2">
                 {t('app.hello', { firstName: user.firstName })}
               </Typography>
+              <Button variant="outlined" color="inherit" size="small" onClick={clearAuth}>
+                {t('app.logout')}
+              </Button>
             </Box>
           ) : (
             <>

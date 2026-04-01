@@ -17,8 +17,10 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../stores/authStore';
 import {
   useAddTodo,
   useClearCompleted,
@@ -34,6 +36,7 @@ function TodosPage() {
   const toggleTodo = useToggleTodo();
   const removeTodo = useRemoveTodo();
   const clearCompleted = useClearCompleted();
+  const user = useAuthStore((state) => state.user);
   const [text, setText] = useState('');
 
   const completedCount = useMemo(
@@ -76,6 +79,14 @@ function TodosPage() {
               t('todos.clearCompleted')
             )}
           </Button>
+          {user && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <AccountCircleIcon fontSize="small" />
+              <Typography variant="body2">
+                {t('app.hello', { firstName: user.firstName })}
+              </Typography>
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
 
