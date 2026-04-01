@@ -63,14 +63,18 @@ function TodosPage() {
           <Button
             color="inherit"
             size="small"
-            disabled={completedCount === 0}
+            disabled={completedCount === 0 || clearCompleted.isPending}
             onClick={() =>
               clearCompleted.mutate(
                 todos.filter((t) => t.completed).map((t) => t.id),
               )
             }
           >
-            {t('todos.clearCompleted')}
+            {clearCompleted.isPending ? (
+              <CircularProgress size={16} color="inherit" />
+            ) : (
+              t('todos.clearCompleted')
+            )}
           </Button>
         </Toolbar>
       </AppBar>
@@ -101,9 +105,14 @@ function TodosPage() {
                 color="primary"
                 size="large"
                 onClick={handleAdd}
+                disabled={addTodo.isPending}
                 sx={{ flex: '0 0 auto', alignSelf: 'center' }}
               >
-                {t('todos.addButton')}
+                {addTodo.isPending ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : (
+                  t('todos.addButton')
+                )}
               </Button>
             </Box>
           </Paper>
@@ -136,8 +145,17 @@ function TodosPage() {
                         edge="end"
                         aria-label={t('todos.deleteAriaLabel')}
                         onClick={() => removeTodo.mutate(todo.id)}
+                        disabled={
+                          removeTodo.isPending &&
+                          removeTodo.variables === todo.id
+                        }
                       >
-                        <DeleteOutlineIcon />
+                        {removeTodo.isPending &&
+                        removeTodo.variables === todo.id ? (
+                          <CircularProgress size={20} />
+                        ) : (
+                          <DeleteOutlineIcon />
+                        )}
                       </IconButton>
                     }
                     sx={{ alignItems: 'center' }}
@@ -147,6 +165,10 @@ function TodosPage() {
                         edge="start"
                         checked={todo.completed}
                         onChange={() => toggleTodo.mutate(todo.id)}
+                        disabled={
+                          toggleTodo.isPending &&
+                          toggleTodo.variables === todo.id
+                        }
                       />
                     </ListItemIcon>
                     <ListItemText
