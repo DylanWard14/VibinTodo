@@ -4,6 +4,8 @@ import { persist } from 'zustand/middleware';
 export type AuthUser = {
   id: string;
   email: string;
+  firstName: string;
+  lastName: string;
 };
 
 type AuthState = {
@@ -15,7 +17,12 @@ type AuthState = {
 
 function parseToken(token: string): AuthUser {
   const payload = JSON.parse(atob(token.split('.')[1]));
-  return { id: payload.sub as string, email: payload.email as string };
+  return {
+    id: payload.sub as string,
+    email: payload.email as string,
+    firstName: payload.firstName as string,
+    lastName: payload.lastName as string,
+  };
 }
 
 export const useAuthStore = create<AuthState>()(

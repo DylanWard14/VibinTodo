@@ -87,7 +87,7 @@ export async function registerHandler(context: Context): Promise<Response> {
   const user = await createUser(email, passwordHash, firstName, lastName);
 
   const token = await sign(
-    { sub: user.id, email: user.email },
+    { sub: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName },
     getJwtSecret(),
     'HS256',
   );
@@ -119,7 +119,7 @@ export async function loginHandler(context: Context): Promise<Response> {
   }
 
   const token = await sign(
-    { sub: user.id, email: user.email },
+    { sub: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName },
     getJwtSecret(),
     'HS256',
   );
