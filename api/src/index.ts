@@ -2,8 +2,8 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 
-import { requireUser, type AuthVariables } from './auth.js';
-import { createTodo, deleteTodo, listTodos, toggleTodo } from './todosStore.js';
+import { requireUser, type AuthVariables } from './auth';
+import { createTodo, deleteTodo, listTodos, toggleTodo } from './todosStore';
 
 type Bindings = {
   Variables: AuthVariables;
@@ -26,9 +26,10 @@ app.get('/health', (context) => {
 
 app.use('/api/*', requireUser);
 
-app.get('/api/todos', (context) => {
+app.get('/api/todos', async (context) => {
   const user = context.get('user');
-  return context.json({ todos: listTodos(user.id) });
+  const todos = await listTodos(user.id);
+  return context.json({ todos });
 });
 
 app.post('/api/todos', async (context) => {
@@ -37,7 +38,7 @@ app.post('/api/todos', async (context) => {
 
   const text = typeof body?.text === 'string' ? body.text : '';
   try {
-    const todo = createTodo(user.id, text);
+    const todo = await createTodo(user.id, text);
     return context.json({ todo }, 201);
   } catch (error) {
     const message =
@@ -46,11 +47,11 @@ app.post('/api/todos', async (context) => {
   }
 });
 
-app.patch('/api/todos/:id/toggle', (context) => {
+app.patch('/api/todos/:id/toggle', async (context) => {
   const user = context.get('user');
   const todoId = context.req.param('id');
 
-  const todo = toggleTodo(user.id, todoId);
+  const todo = await toggleTodo(user.id, todoId);
   if (!todo) {
     return context.json(
       { error: 'NOT_FOUND', message: 'Todo not found.' },
@@ -61,11 +62,11 @@ app.patch('/api/todos/:id/toggle', (context) => {
   return context.json({ todo });
 });
 
-app.delete('/api/todos/:id', (context) => {
+app.delete('/api/todos/:id', async (context) => {
   const user = context.get('user');
   const todoId = context.req.param('id');
 
-  const wasDeleted = deleteTodo(user.id, todoId);
+  const wasDeleted = await deleteTodo(user.id, todoId);
   if (!wasDeleted) {
     return context.json(
       { error: 'NOT_FOUND', message: 'Todo not found.' },
@@ -88,4 +89,3 @@ serve(
     console.log(`Todo API listening on http://localhost:${info.port}`);
   },
 );
-

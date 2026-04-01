@@ -1,3 +1,5 @@
+import db from './db';
+
 export type Todo = {
   id: string;
   text: string;
@@ -5,59 +7,65 @@ export type Todo = {
   createdAt: number;
 };
 
-type UserId = string;
-
-const todosByUserId = new Map<UserId, Todo[]>();
-
-const makeId = () => {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-    return crypto.randomUUID();
-  }
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+type TodoRow = {
+  id: string;
+  user_id: string;
+  text: string;
+  completed: boolean;
+  created_at: string | number;
 };
 
-export function listTodos(userId: string): Todo[] {
-  return todosByUserId.get(userId) ?? [];
+function rowToTodo(row: TodoRow): Todo {
+  return {
+    id: row.id,
+    text: row.text,
+    completed: row.completed,
+    createdAt: Number(row.created_at),
+  };
 }
 
-export function createTodo(userId: string, text: string): Todo {
+export async function listTodos(userId: string): Promise<Todo[]> {
+  const rows = await db<TodoRow>('todos')
+    .where({ user_id: userId })
+    .orderBy('created_at', 'desc');
+  return rows.map(rowToTodo);
+}
+
+export async function createTodo(userId: string, text: string): Promise<Todo> {
   const trimmedText = text.trim();
   if (!trimmedText) {
     throw new Error('Todo text is required.');
   }
 
-  const todo: Todo = {
-    id: makeId(),
-    text: trimmedText,
-    completed: false,
-    createdAt: Date.now(),
-  };
-
-  const existingTodos = todosByUserId.get(userId) ?? [];
-  todosByUserId.set(userId, [todo, ...existingTodos]);
-  return todo;
+  const [row] = await db<TodoRow>('todos')
+    .insert({
+      id: crypto.randomUUID(),
+      user_id: userId,
+      text: trimmedText,
+      completed: false,
+      created_at: Date.now(),
+    })
+    .returning('*');
+  return rowToTodo(row);
 }
 
-export function toggleTodo(userId: string, todoId: string): Todo | null {
-  const todos = todosByUserId.get(userId) ?? [];
-  let toggled: Todo | null = null;
-  const updated = todos.map((todo) => {
-    if (todo.id === todoId) {
-      toggled = { ...todo, completed: !todo.completed };
-      return toggled;
-    }
-    return todo;
-  });
-  todosByUserId.set(userId, updated);
-  return toggled;
+export async function toggleTodo(
+  userId: string,
+  todoId: string,
+): Promise<Todo | null> {
+  const [row] = await db<TodoRow>('todos')
+    .where({ id: todoId, user_id: userId })
+    .update({ completed: db.raw('NOT completed') })
+    .returning('*');
+  return row ? rowToTodo(row) : null;
 }
 
-export function deleteTodo(userId: string, todoId: string): boolean {
-  const existingTodos = todosByUserId.get(userId) ?? [];
-  const filteredTodos = existingTodos.filter((todo) => todo.id !== todoId);
-  const wasDeleted = filteredTodos.length !== existingTodos.length;
-
-  todosByUserId.set(userId, filteredTodos);
-  return wasDeleted;
+export async function deleteTodo(
+  userId: string,
+  todoId: string,
+): Promise<boolean> {
+  const count = await db<TodoRow>('todos')
+    .where({ id: todoId, user_id: userId })
+    .delete();
+  return count > 0;
 }
-
