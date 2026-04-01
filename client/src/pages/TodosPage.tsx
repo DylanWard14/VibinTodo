@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
@@ -18,26 +18,23 @@ import {
   Typography,
 } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { useTodoStore } from '../stores/todoStore';
 import { useTranslation } from 'react-i18next';
+import {
+  useAddTodo,
+  useClearCompleted,
+  useRemoveTodo,
+  useTodos,
+  useToggleTodo,
+} from '../hooks/useTodos';
 
 function TodosPage() {
   const { t } = useTranslation();
-  const {
-    todos,
-    loading,
-    error,
-    fetchTodos,
-    addTodo,
-    toggleCompletedStatus,
-    removeTodo,
-    clearCompleted,
-  } = useTodoStore();
+  const { data: todos = [], isLoading, error } = useTodos();
+  const addTodo = useAddTodo();
+  const toggleTodo = useToggleTodo();
+  const removeTodo = useRemoveTodo();
+  const clearCompleted = useClearCompleted();
   const [text, setText] = useState('');
-
-  useEffect(() => {
-    fetchTodos();
-  }, [fetchTodos]);
 
   const completedCount = useMemo(
     () => todos.filter((todo) => todo.completed).length,
@@ -45,7 +42,11 @@ function TodosPage() {
   );
 
   const handleAdd = () => {
-    addTodo(text);
+    const trimmed = text.trim();
+    if (!trimmed) {
+      return;
+    }
+    addTodo.mutate(trimmed);
     setText('');
   };
 
@@ -63,7 +64,11 @@ function TodosPage() {
             color="inherit"
             size="small"
             disabled={completedCount === 0}
-            onClick={clearCompleted}
+            onClick={() =>
+              clearCompleted.mutate(
+                todos.filter((t) => t.completed).map((t) => t.id),
+              )
+            }
           >
             {t('todos.clearCompleted')}
           </Button>
@@ -108,13 +113,13 @@ function TodosPage() {
               {t('todos.todoListTitle')}
             </Typography>
 
-            {loading ? (
+            {isLoading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
                 <CircularProgress size={24} />
               </Box>
             ) : error ? (
               <Typography variant="body2" color="error">
-                {error}
+                {error.message}
               </Typography>
             ) : todos.length === 0 ? (
               <Typography variant="body2" color="text.secondary">
@@ -130,7 +135,7 @@ function TodosPage() {
                       <IconButton
                         edge="end"
                         aria-label={t('todos.deleteAriaLabel')}
-                        onClick={() => removeTodo(todo.id)}
+                        onClick={() => removeTodo.mutate(todo.id)}
                       >
                         <DeleteOutlineIcon />
                       </IconButton>
@@ -141,7 +146,7 @@ function TodosPage() {
                       <Checkbox
                         edge="start"
                         checked={todo.completed}
-                        onChange={() => toggleCompletedStatus(todo.id)}
+                        onChange={() => toggleTodo.mutate(todo.id)}
                       />
                     </ListItemIcon>
                     <ListItemText
