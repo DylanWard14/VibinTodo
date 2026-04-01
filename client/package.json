@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,md,json}\"",
-    "api:dev": "npm run dev --prefix api",
+    "build": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json && vite build",
+    "lint": "eslint --config eslint.config.js .",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,md,json}\" \"*.{ts,js,json}\" \"**/*.{ts,tsx,js,jsx,css,md,json}\"",
+    "api:dev": "npm run dev --prefix ../api",
     "preview": "vite preview"
   },
   "dependencies": {
