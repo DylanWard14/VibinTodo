@@ -37,6 +37,7 @@ function TodosPage() {
   const removeTodo = useRemoveTodo();
   const clearCompleted = useClearCompleted();
   const user = useAuthStore((state) => state.user);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
   const [text, setText] = useState('');
 
   const completedCount = useMemo(
@@ -63,28 +64,15 @@ function TodosPage() {
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
             {t('todos.title')}
           </Typography>
-          <Button
-            color="inherit"
-            size="small"
-            disabled={completedCount === 0 || clearCompleted.isPending}
-            onClick={() =>
-              clearCompleted.mutate(
-                todos.filter((t) => t.completed).map((t) => t.id),
-              )
-            }
-          >
-            {clearCompleted.isPending ? (
-              <CircularProgress size={16} color="inherit" />
-            ) : (
-              t('todos.clearCompleted')
-            )}
-          </Button>
           {user && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <AccountCircleIcon fontSize="small" />
               <Typography variant="body2">
                 {t('app.hello', { firstName: user.firstName })}
               </Typography>
+              <Button variant="outlined" color="inherit" size="small" onClick={clearAuth}>
+                {t('app.logout')}
+              </Button>
             </Box>
           )}
         </Toolbar>
@@ -196,6 +184,25 @@ function TodosPage() {
                   </ListItem>
                 ))}
               </List>
+            )}
+            {todos.length > 0 && (
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 1.5 }}>
+                <Button
+                  size="small"
+                  disabled={completedCount === 0 || clearCompleted.isPending}
+                  onClick={() =>
+                    clearCompleted.mutate(
+                      todos.filter((todo) => todo.completed).map((todo) => todo.id),
+                    )
+                  }
+                >
+                  {clearCompleted.isPending ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : (
+                    t('todos.clearCompleted')
+                  )}
+                </Button>
+              </Box>
             )}
           </Paper>
         </Box>
