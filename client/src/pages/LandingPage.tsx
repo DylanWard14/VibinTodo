@@ -19,6 +19,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/authStore';
+import ThemeToggle from '../components/ThemeToggle';
 
 function LandingPage() {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ function LandingPage() {
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
             {t('app.name')}
           </Typography>
+          <ThemeToggle />
           {user ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <AccountCircleIcon fontSize="small" />

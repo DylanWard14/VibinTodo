@@ -16,6 +16,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { login } from '../api/auth';
 import { useAuthStore } from '../stores/authStore';
+import ThemeToggle from '../components/ThemeToggle';
 
 function SignInPage() {
   const { t } = useTranslation();
@@ -50,6 +51,7 @@ function SignInPage() {
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
             {t('app.name')}
           </Typography>
+          <ThemeToggle />
           <Button
             component={RouterLink}
             to="/register"

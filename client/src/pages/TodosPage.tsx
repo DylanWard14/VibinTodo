@@ -21,6 +21,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../stores/authStore';
+import ThemeToggle from '../components/ThemeToggle';
 import {
   useAddTodo,
   useClearCompleted,
@@ -64,6 +65,7 @@ function TodosPage() {
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
             {t('todos.title')}
           </Typography>
+          <ThemeToggle />
           {user && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <AccountCircleIcon fontSize="small" />
