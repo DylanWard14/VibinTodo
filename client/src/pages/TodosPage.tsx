@@ -1,43 +1,21 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import {
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   Container,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Paper,
   TextField,
   Typography,
 } from '@mui/material';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useTranslation } from 'react-i18next';
-import {
-  useAddTodo,
-  useClearCompleted,
-  useRemoveTodo,
-  useTodos,
-  useToggleTodo,
-} from '../hooks/useTodos';
+import { useAddTodo } from '../hooks/useTodos';
+import TodosList from '../sections/TodosList';
 
 function TodosPage() {
   const { t } = useTranslation();
-  const { data: todos = [], isLoading, error } = useTodos();
   const addTodo = useAddTodo();
-  const toggleTodo = useToggleTodo();
-  const removeTodo = useRemoveTodo();
-  const clearCompleted = useClearCompleted();
   const [text, setText] = useState('');
-
-  const completedCount = useMemo(
-    () => todos.filter((todo) => todo.completed).length,
-    [todos],
-  );
 
   const handleAdd = () => {
     const trimmed = text.trim();
@@ -55,7 +33,6 @@ function TodosPage() {
           <Typography variant="h5" gutterBottom>
             {t('todos.addItems')}
           </Typography>
-
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             <TextField
               value={text}
@@ -87,98 +64,7 @@ function TodosPage() {
           </Box>
         </Paper>
 
-        <Paper elevation={3} sx={{ p: 2.5, borderRadius: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            {t('todos.todoListTitle')}
-          </Typography>
-
-          {isLoading ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
-              <CircularProgress size={24} />
-            </Box>
-          ) : error ? (
-            <Typography variant="body2" color="error">
-              {error.message}
-            </Typography>
-          ) : todos.length === 0 ? (
-            <Typography variant="body2" color="text.secondary">
-              {t('todos.emptyState')}
-            </Typography>
-          ) : (
-            <List disablePadding>
-              {todos.map((todo) => (
-                <ListItem
-                  key={todo.id}
-                  divider
-                  secondaryAction={
-                    <IconButton
-                      edge="end"
-                      aria-label={t('todos.deleteAriaLabel')}
-                      onClick={() => removeTodo.mutate(todo.id)}
-                      disabled={
-                        removeTodo.isPending &&
-                        removeTodo.variables === todo.id
-                      }
-                    >
-                      {removeTodo.isPending &&
-                      removeTodo.variables === todo.id ? (
-                        <CircularProgress size={20} />
-                      ) : (
-                        <DeleteOutlineIcon />
-                      )}
-                    </IconButton>
-                  }
-                  sx={{ alignItems: 'center' }}
-                >
-                  <ListItemIcon sx={{ minWidth: 40 }}>
-                    <Checkbox
-                      edge="start"
-                      checked={todo.completed}
-                      onChange={() => toggleTodo.mutate(todo.id)}
-                      disabled={
-                        toggleTodo.isPending &&
-                        toggleTodo.variables === todo.id
-                      }
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Link
-                        to={`/todos/${todo.id}`}
-                        style={{
-                          textDecoration: todo.completed ? 'line-through' : 'none',
-                          opacity: todo.completed ? 0.7 : 1,
-                          color: 'inherit',
-                        }}
-                      >
-                        {todo.text}
-                      </Link>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-          )}
-          {todos.length > 0 && (
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 1.5 }}>
-              <Button
-                size="small"
-                disabled={completedCount === 0 || clearCompleted.isPending}
-                onClick={() =>
-                  clearCompleted.mutate(
-                    todos.filter((todo) => todo.completed).map((todo) => todo.id),
-                  )
-                }
-              >
-                {clearCompleted.isPending ? (
-                  <CircularProgress size={16} color="inherit" />
-                ) : (
-                  t('todos.clearCompleted')
-                )}
-              </Button>
-            </Box>
-          )}
-        </Paper>
+        <TodosList />
       </Box>
     </Container>
   );
