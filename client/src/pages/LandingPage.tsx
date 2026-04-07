@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Box,
   Button,
   Checkbox,
@@ -10,59 +9,18 @@ import {
   ListItemText,
   Paper,
   TextField,
-  Toolbar,
   Typography,
 } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuthStore } from '../stores/authStore';
-import ThemeToggle from '../components/ThemeToggle';
 
 function LandingPage() {
   const { t } = useTranslation();
-  const user = useAuthStore((state) => state.user);
-  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   return (
-    <>
-      <AppBar position="static" color="transparent" elevation={0}>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            {t('app.name')}
-          </Typography>
-          <ThemeToggle />
-          {user ? (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <AccountCircleIcon fontSize="small" />
-              <Typography variant="body2">
-                {t('app.hello', { firstName: user.firstName })}
-              </Typography>
-              <Button variant="outlined" color="inherit" size="small" onClick={clearAuth}>
-                {t('app.logout')}
-              </Button>
-            </Box>
-          ) : (
-            <>
-              <Button color="inherit" size="small" component={Link} to="/signin">
-                {t('app.signIn')}
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                component={Link}
-                to="/register"
-              >
-                {t('app.register')}
-              </Button>
-            </>
-          )}
-        </Toolbar>
-      </AppBar>
-
-      <Container maxWidth="md" sx={{ py: 6 }}>
+    <Container maxWidth="md" sx={{ py: 6 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <Box>
             <Typography variant="h3" component="h1" gutterBottom>
@@ -157,8 +115,7 @@ function LandingPage() {
             </List>
           </Paper>
         </Box>
-      </Container>
-    </>
+    </Container>
   );
 }
 
