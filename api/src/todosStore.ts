@@ -24,6 +24,16 @@ function rowToTodo(row: TodoRow): Todo {
   };
 }
 
+export async function getTodo(
+  userId: string,
+  todoId: string,
+): Promise<Todo | null> {
+  const row = await db<TodoRow>('todos')
+    .where({ id: todoId, user_id: userId })
+    .first();
+  return row ? rowToTodo(row) : null;
+}
+
 export async function listTodos(userId: string): Promise<Todo[]> {
   const rows = await db<TodoRow>('todos')
     .where({ user_id: userId })
