@@ -24,6 +24,9 @@ function NavBar() {
         <ThemeToggle />
         {user ? (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Button color="inherit" size="small" component={Link} to="/todos">
+              {t('app.myTodos')}
+            </Button>
             <AccountCircleIcon fontSize="small" />
             <Typography variant="body2">
               {t('app.hello', { firstName: user.firstName })}

@@ -1,22 +1,19 @@
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Alert,
-  AppBar,
   Box,
   Button,
   CircularProgress,
   Container,
   Paper,
   TextField,
-  Toolbar,
   Typography,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { login } from '../api/auth';
 import { useAuthStore } from '../stores/authStore';
-import ThemeToggle from '../components/ThemeToggle';
 
 function SignInPage() {
   const { t } = useTranslation();
@@ -42,28 +39,7 @@ function SignInPage() {
   };
 
   return (
-    <>
-      <AppBar position="static" color="transparent" elevation={0}>
-        <Toolbar sx={{ gap: 1 }}>
-          <Button component={RouterLink} to="/" color="inherit" size="small">
-            {t('todos.back')}
-          </Button>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            {t('app.name')}
-          </Typography>
-          <ThemeToggle />
-          <Button
-            component={RouterLink}
-            to="/register"
-            variant="contained"
-            size="small"
-          >
-            {t('app.register')}
-          </Button>
-        </Toolbar>
-      </AppBar>
-
-      <Container maxWidth="sm" sx={{ py: 6 }}>
+    <Container maxWidth="sm" sx={{ py: 6 }}>
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
           <Typography variant="h5" fontWeight={600} sx={{ mb: 3 }}>
             {t('signIn.title')}
@@ -113,7 +89,6 @@ function SignInPage() {
           </Box>
         </Paper>
       </Container>
-    </>
   );
 }
 
