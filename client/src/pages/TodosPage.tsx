@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -141,13 +142,18 @@ function TodosPage() {
                     />
                   </ListItemIcon>
                   <ListItemText
-                    primary={todo.text}
-                    primaryTypographyProps={{
-                      sx: {
-                        textDecoration: todo.completed ? 'line-through' : 'none',
-                        opacity: todo.completed ? 0.7 : 1,
-                      },
-                    }}
+                    primary={
+                      <Link
+                        to={`/todos/${todo.id}`}
+                        style={{
+                          textDecoration: todo.completed ? 'line-through' : 'none',
+                          opacity: todo.completed ? 0.7 : 1,
+                          color: 'inherit',
+                        }}
+                      >
+                        {todo.text}
+                      </Link>
+                    }
                   />
                 </ListItem>
               ))}

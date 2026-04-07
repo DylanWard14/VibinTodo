@@ -2,11 +2,16 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createTodo,
   deleteTodo,
+  fetchTodo,
   fetchTodos,
   toggleTodo,
 } from '../api/todos';
 
 const TODOS_KEY = ['todos'];
+
+export function useTodo(id: string) {
+  return useQuery({ queryKey: [...TODOS_KEY, id], queryFn: () => fetchTodo(id) });
+}
 
 export function useTodos() {
   return useQuery({ queryKey: TODOS_KEY, queryFn: fetchTodos });

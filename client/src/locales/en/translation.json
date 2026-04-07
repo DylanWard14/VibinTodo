@@ -45,5 +45,12 @@
     "todoListTitle": "Todo list",
     "emptyState": "No todos yet. Add one above to get started.",
     "deleteAriaLabel": "Delete todo"
+  },
+  "todoDetail": {
+    "status": "Status",
+    "created": "Created",
+    "completed": "Completed",
+    "incomplete": "Incomplete",
+    "notFound": "Todo not found."
   }
 }

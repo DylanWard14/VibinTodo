@@ -24,6 +24,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+export async function fetchTodo(id: string): Promise<TodoItem> {
+  const data = await request<{ todo: TodoItem }>(`/api/todos/${id}`);
+  return data.todo;
+}
+
 export async function fetchTodos(): Promise<TodoItem[]> {
   const data = await request<{ todos: TodoItem[] }>('/api/todos');
   return data.todos;
